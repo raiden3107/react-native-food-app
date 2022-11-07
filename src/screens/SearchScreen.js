@@ -3,6 +3,7 @@ import { Text, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
 import SearchBar from "../components/SearchBar";
 import ResultList from "../components/ResultList";
 import yelp from "../api/yelp";
+import * as SplashScreen from 'expo-splash-screen';
 
 const SearchScreen = () => {
   const [term, setTerm] = useState("");
@@ -12,6 +13,7 @@ const SearchScreen = () => {
 
   const searchApi = async (searchTerm) => {
     setLoading(true)
+    SplashScreen.preventAutoHideAsync();
     try {
       const response = await yelp.get("/search", {
         params: {
@@ -25,6 +27,7 @@ const SearchScreen = () => {
       setError("Something went wrong");
     } finally{
       setLoading(false)
+      await SplashScreen.hideAsync();
     }
   };
 
